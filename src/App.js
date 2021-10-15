@@ -3,7 +3,8 @@ import React, { useState, useEffect } from 'react';
 import PokemonList from "./Components/PokemonList";
 import PokemonDetails from "./Components/PokemonDetails";
 import { Switch, Route, Link } from 'react-router-dom';
-
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 
 function App() {
 
@@ -43,6 +44,8 @@ function App() {
 
   console.log(pokeList)
 
+  const buttonStyle = { width: 150, backgroundColor: "green" }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -51,10 +54,11 @@ function App() {
       <div className="main-app">
         Main App
       </div>
-      <div className="poke-list">
-        <Link to="/">Home</Link><br/>
-        <Link to="/favorites">Favorites</Link><br/>
-        PokeMon List
+      <div className="poke-list" >
+        <Stack spacing={0.5} direction="column" sx={{mt:2}}>
+          <Link to="/"><Button variant="contained" sx={buttonStyle}>Home</Button></Link>
+          <Link to="/favorites"><Button variant="contained" sx={buttonStyle}>Favorites</Button></Link><br /><br />
+        </Stack>
         <Switch>
           {/* <Route path="/favorites">
             <PokemonList pokeList={favorites} />
@@ -67,14 +71,14 @@ function App() {
       </div>
       <div className="pokemon">
         {/*Pokemon*/}
-          <Switch>
-            <Route path="/favorites">
-              <PokemonList pokeList={favorites} />
-            </Route>
-            <Route path={`/:pokemonName`}>
-              <PokemonDetails favoriteFuncs={favoriteFuncs} />
-              </Route>
-          </Switch>
+        <Switch>
+          <Route path="/favorites">
+            <PokemonList pokeList={favorites} />
+          </Route>
+          <Route path={`/:pokemonName`}>
+            <PokemonDetails favoriteFuncs={favoriteFuncs} />
+          </Route>
+        </Switch>
       </div>
     </div>
   );
