@@ -4,32 +4,32 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { CardActionArea } from '@mui/material';
+// import { CardActionArea } from '@mui/material';
 import Box from '@mui/material/Box';
 
 
 
 export default function PokemonDetails({ favoriteFuncs }) {
-    const { pokemonName } = useParams();
-    const [pokemon, setPokemon] = useState();
-    const [checked, setChecked] = useState(favoriteFuncs.isFavorite(pokemonName));
+    const { pkmnName } = useParams();
+    const [pkmn, setPkmn] = useState();
+    const [checked, setChecked] = useState(favoriteFuncs.isFavorite(pkmnName));
 
     useEffect(() => {
         async function callPokeDetails() {
-            let res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);//setState offset var for future changes
+            let res = await fetch(`https://pokeapi.co/api/v2/pokemon/${pkmnName}`);
             let json = await res.json();
-            setPokemon(json);
+            setPkmn(json);
         };
         callPokeDetails();
-        setChecked(favoriteFuncs.isFavorite(pokemonName));
-    }, [pokemonName]);
+        setChecked(favoriteFuncs.isFavorite(pkmnName));
+    }, [pkmnName, favoriteFuncs]);
 
 
     const handleChange = () => {
         if (checked) {
-            favoriteFuncs.removeFavorite(pokemonName)
+            favoriteFuncs.removeFavorite(pkmnName)
         } else {
-            favoriteFuncs.addFavorite(pokemonName)
+            favoriteFuncs.addFavorite(pkmnName)
         }
         setChecked(!checked);
     };
@@ -38,8 +38,8 @@ export default function PokemonDetails({ favoriteFuncs }) {
         return str[0].toUpperCase() + str.substring(1)
     }
 
-    if(!pokemon){
-        return(<h1>Loading</h1>)
+    if (!pkmn) {
+        return (<h1>Loading</h1>)
     }
     return (
         <Box sx={{ mx: "auto", width: "100%" }}>
@@ -48,12 +48,12 @@ export default function PokemonDetails({ favoriteFuncs }) {
                     component="img"
                     // height="140"
                     sx={{ width: "25vw", display: "inline-flex", mx: "auto" }}
-                    image={pokemon?.sprites?.other["official-artwork"].front_default}
-                    alt="pokemon sprite"
+                    image={pkmn?.sprites?.other["official-artwork"].front_default}
+                    alt="pkmn sprite"
                 />
-                <CardContent sx={{ mx: "auto", display:"table" }}>
+                <CardContent sx={{ mx: "auto", display: "table" }}>
                     <Typography gutterBottom variant="h2" component="div">
-                        {capitalize(pokemon.name)}
+                        {capitalize(pkmn.name)}
                     </Typography>
 
                     <Typography gutterBottom variant="h5" component="div">
@@ -62,13 +62,11 @@ export default function PokemonDetails({ favoriteFuncs }) {
                             Favorite
                         </label>
                     </Typography>
-                    
-                    <Typography variant="body2" color="text.secondary">
-                        <h3>Type(s): {pokemon.types.map((type, index) => <div key={index+ 1000}>{capitalize(type.type.name)}</div>)}</h3>
-                        <h3>PokeDex Entry #: {pokemon.id}</h3>
-                        <h3>Ability: {capitalize(pokemon.abilities[0].ability.name)}</h3>
-                        
 
+                    <Typography variant="body2" color="text.secondary">
+                        <h3>Type(s): {pkmn.types.map((type, index) => <div key={index + 1000}>{capitalize(type.type.name)}</div>)}</h3>
+                        <h3>PokeDex Entry #: {pkmn.id}</h3>
+                        <h3>Ability: {capitalize(pkmn.abilities[0].ability.name)}</h3>
                     </Typography>
                 </CardContent>
             </Card>
